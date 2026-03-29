@@ -27,6 +27,7 @@ Open [script.js](C:/Users/ngupta/Documents/ngSecondRepoRSVP/script.js) and set:
 
 ```js
 const GOOGLE_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+#https://meghamittal26.github.io/ngSecondRepoRSVP/
 ```
 
 ## 5. Test
