@@ -2,10 +2,11 @@ const STORAGE_KEY = "vg-birthday-rsvp-responses";
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxl5FuAfN0qJqGUw5QG9GmWOkPl-_2WarHQ0c9hWBtITuNOaEGTTuV39LcehiuLncqB/exec";
 
 const form = document.getElementById("rsvp-form");
+const submitButton = document.getElementById("submit-button");
 const successMessage = document.getElementById("success-message");
-const responsesList = document.getElementById("responses-list");
-const clearResponsesButton = document.getElementById("clear-responses");
 const syncNote = document.getElementById("sync-note");
+const confirmationCard = document.getElementById("confirmation-card");
+const confirmationDetails = document.getElementById("confirmation-details");
 
 if (GOOGLE_SCRIPT_URL) {
   syncNote.textContent = "Google Sheets sync is on. Each RSVP will save locally and be sent to your sheet.";
@@ -31,6 +32,25 @@ function saveResponses(responses) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(responses));
 }
 
+function renderConfirmation(response) {
+  confirmationDetails.innerHTML = `
+    <div class="confirmation-row">
+      <span class="confirmation-label">Full Name</span>
+      <span class="confirmation-value">${escapeHtml(response.fullName)}</span>
+    </div>
+    <div class="confirmation-row">
+      <span class="confirmation-label">Address</span>
+      <span class="confirmation-value">${escapeHtml(response.address)}</span>
+    </div>
+    <div class="confirmation-row">
+      <span class="confirmation-label">RSVP Response</span>
+      <span class="confirmation-value confirmation-badge">${escapeHtml(response.attendance)}</span>
+    </div>
+  `;
+
+  confirmationCard.hidden = false;
+}
+
 async function sendToGoogleSheets(response) {
   if (!GOOGLE_SCRIPT_URL) {
     return { synced: false };
@@ -54,33 +74,6 @@ async function sendToGoogleSheets(response) {
   return { synced: true };
 }
 
-function renderResponses() {
-  const responses = getResponses();
-
-  if (responses.length === 0) {
-    responsesList.innerHTML = `
-      <div class="empty-state">
-        <p>No RSVP submissions yet. Submit the form above to see responses here.</p>
-      </div>
-    `;
-    return;
-  }
-
-  responsesList.innerHTML = responses
-    .map((response) => {
-      return `
-        <article class="response-item">
-          <h3>${escapeHtml(response.fullName)}</h3>
-          <p class="response-meta"><strong>Address:</strong> ${escapeHtml(response.address)}</p>
-          <p class="response-meta">
-            <span class="response-attendance">${escapeHtml(response.attendance)}</span>
-          </p>
-        </article>
-      `;
-    })
-    .join("");
-}
-
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -92,6 +85,9 @@ function escapeHtml(value) {
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting...";
+  successMessage.textContent = "";
 
   const formData = new FormData(form);
   const newResponse = {
@@ -107,21 +103,22 @@ form.addEventListener("submit", async (event) => {
   try {
     const result = await sendToGoogleSheets(newResponse);
     successMessage.textContent = result.synced
-      ? "Thanks! Your RSVP was saved in this browser and sent to Google Sheets."
-      : "Thanks! Your RSVP has been saved in this browser.";
+      ? "Thanks! Your RSVP was received successfully."
+      : "Thanks! Your RSVP has been saved successfully.";
+    renderConfirmation(newResponse);
+    form.reset();
   } catch (error) {
     console.error(error);
-    successMessage.textContent = "Saved in this browser, but Google Sheets sync did not go through yet.";
-  } finally {
+    successMessage.textContent = "Your RSVP was saved, but Google Sheets sync did not go through yet.";
+    renderConfirmation(newResponse);
     form.reset();
-    renderResponses();
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit";
   }
 });
 
-clearResponsesButton.addEventListener("click", () => {
-  localStorage.removeItem(STORAGE_KEY);
-  successMessage.textContent = "";
-  renderResponses();
-});
-
-renderResponses();
+const savedResponses = getResponses();
+if (savedResponses.length > 0) {
+  renderConfirmation(savedResponses[0]);
+}

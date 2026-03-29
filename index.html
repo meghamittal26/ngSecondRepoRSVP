@@ -44,7 +44,7 @@
           </label>
         </fieldset>
 
-        <button type="submit" class="submit-button">Submit</button>
+        <button id="submit-button" type="submit" class="submit-button">Submit</button>
         <p id="success-message" class="success-message" aria-live="polite"></p>
         <p id="sync-note" class="sync-note">
           Google Sheets sync is off until you add your Apps Script web app URL in
@@ -53,12 +53,9 @@
       </form>
     </section>
 
-    <section class="responses-card">
-      <div class="section-heading">
-        <h2>Submitted Responses</h2>
-        <button id="clear-responses" class="secondary-button" type="button">Clear Saved Responses</button>
-      </div>
-      <div id="responses-list" class="responses-list"></div>
+    <section id="confirmation-card" class="responses-card confirmation-card" hidden>
+      <h2>RSVP Received</h2>
+      <div id="confirmation-details" class="confirmation-details"></div>
     </section>
   </main>
 
