@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VG Birthday RSVP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero-card">
+      <div class="hero-copy">
+        <p class="eyebrow">Celebration RSVP</p>
+        <h1>VG Birthday RSVP</h1>
+        <p class="intro">
+          Let us know if you can make it. The page keeps a local copy in this browser,
+          and it can also send each RSVP to Google Sheets once you add your Apps Script URL.
+        </p>
+      </div>
+
+      <form id="rsvp-form" class="rsvp-form">
+        <div class="field">
+          <label for="fullName">Full Name</label>
+          <input id="fullName" name="fullName" type="text" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="field">
+          <label for="address">Address</label>
+          <textarea id="address" name="address" rows="3" placeholder="Enter your address" required></textarea>
+        </div>
+
+        <fieldset class="field attendance-group">
+          <legend>Will you attend?</legend>
+          <label class="radio-card">
+            <input type="radio" name="attendance" value="Yes" required>
+            <span>Yes</span>
+          </label>
+          <label class="radio-card">
+            <input type="radio" name="attendance" value="No" required>
+            <span>No</span>
+          </label>
+        </fieldset>
+
+        <button type="submit" class="submit-button">Submit</button>
+        <p id="success-message" class="success-message" aria-live="polite"></p>
+        <p id="sync-note" class="sync-note">
+          Google Sheets sync is off until you add your Apps Script web app URL in
+          <code>script.js</code>.
+        </p>
+      </form>
+    </section>
+
+    <section class="responses-card">
+      <div class="section-heading">
+        <h2>Submitted Responses</h2>
+        <button id="clear-responses" class="secondary-button" type="button">Clear Saved Responses</button>
+      </div>
+      <div id="responses-list" class="responses-list"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
