@@ -104,8 +104,7 @@ body::after {
 .eyebrow,
 h1,
 .intro,
-.event-details,
-.hero-pills {
+.event-details {
   position: relative;
   z-index: 1;
 }
@@ -185,24 +184,6 @@ h1 {
 
 .event-details strong {
   color: var(--text);
-}
-
-.hero-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 0.6rem;
-}
-
-.hero-pills span {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.45rem 0.8rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(217, 105, 65, 0.14);
-  color: var(--muted);
-  font-size: 0.9rem;
 }
 
 .rsvp-form {
@@ -329,20 +310,6 @@ textarea {
   margin: 0.9rem 0 0;
   color: var(--success);
   font-weight: 600;
-}
-
-.sync-note {
-  margin: 0.5rem 0 0;
-  color: var(--muted);
-  line-height: 1.5;
-  font-size: 0.95rem;
-}
-
-.sync-note code {
-  background: rgba(217, 105, 65, 0.08);
-  border-radius: 8px;
-  padding: 0.1rem 0.4rem;
-  font-family: Consolas, monospace;
 }
 
 .site-version {

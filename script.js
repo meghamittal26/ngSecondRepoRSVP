@@ -3,7 +3,6 @@ const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzmoinmQF1QUi
 const form = document.getElementById("rsvp-form");
 const submitButton = document.getElementById("submit-button");
 const successMessage = document.getElementById("success-message");
-const syncNote = document.getElementById("sync-note");
 const attendanceSelect = document.getElementById("attendance");
 const captchaQuestion = document.getElementById("captcha-question");
 const captchaAnswer = document.getElementById("captchaAnswer");
@@ -17,10 +16,6 @@ const stateInput = document.getElementById("state");
 const zipInput = document.getElementById("zip");
 
 let currentCaptchaAnswer = "";
-
-if (GOOGLE_SCRIPT_URL) {
-  syncNote.textContent = "Google Sheets sync is on. Each RSVP will be sent to your sheet.";
-}
 
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
