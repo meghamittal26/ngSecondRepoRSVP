@@ -128,7 +128,7 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
-  if (!/^\d{10,15}$/.test(newResponse.phone)) {
+  if (newResponse.phone && !/^\d{10,15}$/.test(newResponse.phone)) {
     successMessage.textContent = "Please enter a valid phone number using numbers only.";
     phoneInput.focus();
     submitButton.disabled = false;
