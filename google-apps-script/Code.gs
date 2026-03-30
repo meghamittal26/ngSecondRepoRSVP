@@ -3,12 +3,13 @@ function doPost(e) {
 
   if (!sheet) {
     sheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet("RSVP Responses");
-    sheet.appendRow(["Timestamp", "Full Name", "Address", "Will Attend"]);
+    sheet.appendRow(["Timestamp", "Full Name", "Email Address", "Address", "Will Attend"]);
   }
 
   sheet.appendRow([
     new Date(),
     e.parameter.fullName || "",
+    e.parameter.email || "",
     e.parameter.address || "",
     e.parameter.attendance || ""
   ]);

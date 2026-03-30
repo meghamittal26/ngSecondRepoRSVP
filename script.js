@@ -27,6 +27,7 @@ async function sendToGoogleSheets(response) {
 
   const payload = new URLSearchParams({
     fullName: response.fullName,
+    email: response.email,
     address: response.address,
     attendance: response.attendance,
   });
@@ -71,6 +72,7 @@ form.addEventListener("submit", async (event) => {
   const formData = new FormData(form);
   const newResponse = {
     fullName: formData.get("fullName")?.toString().trim() ?? "",
+    email: formData.get("email")?.toString().trim() ?? "",
     address: formData.get("address")?.toString().trim() ?? "",
     attendance: formData.get("attendance")?.toString() ?? "",
   };
