@@ -4,12 +4,17 @@ const form = document.getElementById("rsvp-form");
 const submitButton = document.getElementById("submit-button");
 const successMessage = document.getElementById("success-message");
 const syncNote = document.getElementById("sync-note");
+const attendanceSelect = document.getElementById("attendance");
 const captchaQuestion = document.getElementById("captcha-question");
 const captchaAnswer = document.getElementById("captchaAnswer");
+const yesDetails = document.getElementById("yes-details");
 const comments = document.getElementById("comments");
 const commentsCount = document.getElementById("comments-count");
 const phoneInput = document.getElementById("phone");
-const guestCountInput = document.getElementById("guestCount");
+const addressInput = document.getElementById("address");
+const cityInput = document.getElementById("city");
+const stateInput = document.getElementById("state");
+const zipInput = document.getElementById("zip");
 
 let currentCaptchaAnswer = "";
 
@@ -35,7 +40,6 @@ async function sendToGoogleSheets(response) {
 
   const payload = new URLSearchParams({
     fullName: response.fullName,
-    guestCount: response.guestCount,
     email: response.email,
     address: response.address,
     city: response.city,
@@ -58,13 +62,23 @@ async function sendToGoogleSheets(response) {
   return { synced: true };
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+function updateConditionalFields() {
+  const isAttending = attendanceSelect.value === "Yes";
+
+  yesDetails.hidden = !isAttending;
+  addressInput.required = isAttending;
+  cityInput.required = isAttending;
+  stateInput.required = isAttending;
+  zipInput.required = isAttending;
+
+  if (!isAttending) {
+    addressInput.value = "";
+    cityInput.value = "";
+    stateInput.value = "";
+    zipInput.value = "";
+    comments.value = "";
+    commentsCount.textContent = "0 / 200";
+  }
 }
 
 form.addEventListener("submit", async (event) => {
@@ -86,7 +100,6 @@ form.addEventListener("submit", async (event) => {
   const formData = new FormData(form);
   const newResponse = {
     fullName: formData.get("fullName")?.toString().trim() ?? "",
-    guestCount: formData.get("guestCount")?.toString().trim() ?? "",
     email: formData.get("email")?.toString().trim() ?? "",
     address: formData.get("address")?.toString().trim() ?? "",
     city: formData.get("city")?.toString().trim() ?? "",
@@ -96,14 +109,6 @@ form.addEventListener("submit", async (event) => {
     attendance: formData.get("attendance")?.toString() ?? "",
     comments: formData.get("comments")?.toString().trim() ?? "",
   };
-
-  if (!/^\d+$/.test(newResponse.guestCount) || Number(newResponse.guestCount) < 1) {
-    successMessage.textContent = "Please enter a valid number of people attending.";
-    guestCountInput.focus();
-    submitButton.disabled = false;
-    submitButton.textContent = "Submit";
-    return;
-  }
 
   if (newResponse.email && !isValidEmail(newResponse.email)) {
     successMessage.textContent = "Please enter a valid email address or leave it blank.";
@@ -121,12 +126,22 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
+  if (newResponse.attendance === "Yes" && (!newResponse.address || !newResponse.city || !newResponse.state || !newResponse.zip)) {
+    successMessage.textContent = "Please complete the address details before submitting.";
+    addressInput.focus();
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit";
+    return;
+  }
+
   try {
     const result = await sendToGoogleSheets(newResponse);
     successMessage.textContent = result.synced
       ? `Thanks ${newResponse.fullName}! Your RSVP response was "${newResponse.attendance}".`
       : `Thanks ${newResponse.fullName}! Your RSVP response was "${newResponse.attendance}".`;
     form.reset();
+    commentsCount.textContent = "0 / 200";
+    updateConditionalFields();
     generateCaptcha();
   } catch (error) {
     console.error(error);
@@ -137,8 +152,6 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-generateCaptcha();
-
 comments.addEventListener("input", () => {
   commentsCount.textContent = `${comments.value.length} / 200`;
 });
@@ -147,6 +160,11 @@ phoneInput.addEventListener("input", () => {
   phoneInput.value = phoneInput.value.replace(/\D/g, "");
 });
 
-guestCountInput.addEventListener("input", () => {
-  guestCountInput.value = guestCountInput.value.replace(/\D/g, "");
+zipInput.addEventListener("input", () => {
+  zipInput.value = zipInput.value.replace(/\D/g, "");
 });
+
+attendanceSelect.addEventListener("change", updateConditionalFields);
+
+generateCaptcha();
+updateConditionalFields();

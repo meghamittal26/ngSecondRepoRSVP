@@ -6,7 +6,6 @@ function doPost(e) {
     sheet.appendRow([
       "Timestamp",
       "Full Name",
-      "How Many People Attending",
       "Email Address",
       "Address",
       "City",
@@ -21,7 +20,6 @@ function doPost(e) {
   sheet.appendRow([
     new Date(),
     e.parameter.fullName || "",
-    e.parameter.guestCount || "",
     e.parameter.email || "",
     e.parameter.address || "",
     e.parameter.city || "",

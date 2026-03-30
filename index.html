@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=2.0">
+  <link rel="stylesheet" href="styles.css?v=2.1">
 </head>
 <body>
   <main class="page-shell">
@@ -23,6 +23,11 @@
           Let us know if you can make it. Each RSVP can be sent directly to Google Sheets,
           with a simple human check before submission.
         </p>
+        <div class="event-details">
+          <p><strong>Celebrate with us</strong></p>
+          <p>Time: 8 pm ET</p>
+          <p>Location: Manhattan, NY 10036</p>
+        </div>
         <div class="hero-pills">
           <span>Birthday vibes</span>
           <span>Quick RSVP</span>
@@ -31,71 +36,65 @@
       </div>
 
       <form id="rsvp-form" class="rsvp-form">
-        <div class="compact-grid top-grid">
+        <div class="compact-grid two-up">
           <div class="field">
             <label for="fullName">Full Name</label>
             <input id="fullName" name="fullName" type="text" placeholder="Enter your full name" required>
           </div>
 
           <div class="field">
-            <label for="guestCount">How Many People Attending</label>
-            <input id="guestCount" name="guestCount" type="number" min="1" step="1" placeholder="1" required>
+            <label for="email">Email Address</label>
+            <input id="email" name="email" type="email" placeholder="Enter your email address">
           </div>
         </div>
 
         <div class="compact-grid two-up">
-          <div class="field">
-            <label for="email">Email Address</label>
-            <input id="email" name="email" type="email" placeholder="Enter your email address">
-          </div>
-
           <div class="field">
             <label for="phone">Phone</label>
             <input id="phone" name="phone" type="tel" inputmode="numeric" pattern="[0-9]{10,15}" placeholder="Phone number" required>
           </div>
-        </div>
-
-        <div class="compact-grid two-up">
-          <div class="field">
-            <label for="address">Address</label>
-            <input id="address" name="address" type="text" placeholder="Street address" required>
-          </div>
 
           <div class="field">
-            <label for="city">City</label>
-            <input id="city" name="city" type="text" placeholder="City" required>
+            <label for="attendance">Will you attend?</label>
+            <select id="attendance" name="attendance" required>
+              <option value="">Select an option</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
           </div>
         </div>
 
-        <div class="compact-grid two-up">
-          <div class="field">
-            <label for="state">State</label>
-            <input id="state" name="state" type="text" placeholder="State" maxlength="20" required>
+        <div id="yes-details" class="conditional-section" hidden>
+          <div class="compact-grid two-up">
+            <div class="field">
+              <label for="address">Address</label>
+              <input id="address" name="address" type="text" placeholder="Street address">
+            </div>
+
+            <div class="field">
+              <label for="city">City</label>
+              <input id="city" name="city" type="text" placeholder="City">
+            </div>
+          </div>
+
+          <div class="compact-grid two-up">
+            <div class="field">
+              <label for="state">State</label>
+              <input id="state" name="state" type="text" placeholder="State" maxlength="20">
+            </div>
+
+            <div class="field">
+              <label for="zip">Zip</label>
+              <input id="zip" name="zip" type="text" inputmode="numeric" placeholder="Zip code" maxlength="10">
+            </div>
           </div>
 
           <div class="field">
-            <label for="zip">Zip</label>
-            <input id="zip" name="zip" type="text" inputmode="numeric" placeholder="Zip code" maxlength="10" required>
+            <label for="comments">Comments</label>
+            <textarea id="comments" name="comments" rows="3" maxlength="200" placeholder="Add a note if you'd like (max 200 characters)"></textarea>
+            <p id="comments-count" class="field-note">0 / 200</p>
           </div>
         </div>
-
-        <div class="field">
-          <label for="comments">Comments</label>
-          <textarea id="comments" name="comments" rows="3" maxlength="200" placeholder="Add a note if you'd like (max 200 characters)"></textarea>
-          <p id="comments-count" class="field-note">0 / 200</p>
-        </div>
-
-        <fieldset class="field attendance-group">
-          <legend>Will you attend?</legend>
-          <label class="radio-card">
-            <input type="radio" name="attendance" value="Yes" required>
-            <span>Yes</span>
-          </label>
-          <label class="radio-card">
-            <input type="radio" name="attendance" value="No" required>
-            <span>No</span>
-          </label>
-        </fieldset>
 
         <div class="field captcha-field">
           <label for="captchaAnswer">Human Check</label>
@@ -119,9 +118,9 @@
       </form>
     </section>
 
-    <p class="site-version">Version 2.0</p>
+    <p class="site-version">Version 2.1</p>
   </main>
 
-  <script src="script.js?v=2.0"></script>
+  <script src="script.js?v=2.1"></script>
 </body>
 </html>
