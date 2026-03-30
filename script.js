@@ -65,20 +65,33 @@ async function sendToGoogleSheets(response) {
 function updateConditionalFields() {
   const isAttending = attendanceSelect.value === "Yes";
 
-  yesDetails.hidden = !isAttending;
   addressInput.required = isAttending;
   cityInput.required = isAttending;
   stateInput.required = isAttending;
   zipInput.required = isAttending;
 
-  if (!isAttending) {
-    addressInput.value = "";
-    cityInput.value = "";
-    stateInput.value = "";
-    zipInput.value = "";
-    comments.value = "";
-    commentsCount.textContent = "0 / 200";
+  if (isAttending) {
+    yesDetails.hidden = false;
+    requestAnimationFrame(() => {
+      yesDetails.classList.add("is-open");
+    });
+    return;
   }
+
+  yesDetails.classList.remove("is-open");
+
+  addressInput.value = "";
+  cityInput.value = "";
+  stateInput.value = "";
+  zipInput.value = "";
+  comments.value = "";
+  commentsCount.textContent = "0 / 200";
+
+  window.setTimeout(() => {
+    if (!yesDetails.classList.contains("is-open")) {
+      yesDetails.hidden = true;
+    }
+  }, 260);
 }
 
 form.addEventListener("submit", async (event) => {
